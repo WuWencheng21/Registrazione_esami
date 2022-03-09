@@ -5,6 +5,16 @@ use Slim\Factory\AppFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
 
+$container = new Container();
+//da inserire prima della create di AppFactory
+AppFactory::setContainer($container);
+
+$container->set('template', function (){
+    return new League\Plates\Engine('../templates', 'phtml');
+});
+
+
+
 $app = AppFactory::create();
 
 //Serve per gestire l'errore, viene genereato un testo html con un codice (404 not found)
@@ -23,6 +33,19 @@ $app->get('/', function (Request $request, Response $response, $args) {
 
 $app->get('/altra_pagina', function (Request $request, Response $response, $args) {
     $response->getBody()->write("Questa è un'altra pagina");
+    return $response;
+});
+
+$app->get('/esempio_template/{name}', function (Request $request, Response $response, $args) {
+    $template  = $this->get('template');
+    //Recupero l'oggetto che gestisce i template dal container
+    //usando il metodo get e passando la stringa identificato nel metodo set
+    $name = $args['name'];
+    //Recupero dall'URL il nome che si trova dopo esempio_template/nome
+    //$variabile = [ 'name' => $args['name']];
+    $response->getBody()->write($template->render('esempio', [
+        'name' => $name
+    ]));
     return $response;
 });
 
