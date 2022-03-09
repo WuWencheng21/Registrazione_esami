@@ -11,6 +11,7 @@ $app = AppFactory::create();
 $errorMiddleware = $app->addErrorMiddleware(false, true, true);
 
 
+
 //Questa parte deve essere sostituita con il nome della propria+
 //sottocartella dove si trova l'applicazione
 $app->setBasePath("/projects/Registrazione_esami");//da cambiare OGNI VOLTA
