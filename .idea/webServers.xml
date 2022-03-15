@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="87bfc6a7-3119-4643-925b-e1182fd8dedf" name="apache" url="http://localhost">
+        <fileTransfer mountedRoot="C:\Program Files\Xamapp\htdocs\projects\Registrazione_esami" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>

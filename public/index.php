@@ -1,7 +1,11 @@
 <?php
+use DI\Container as Container;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use Util\Connection;
+use League\Plates\Engine;
+
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -22,7 +26,7 @@ $errorMiddleware = $app->addErrorMiddleware(false, true, true);
 
 
 
-//Questa parte deve essere sostituita con il nome della propria+
+//Questa parte deve essere sostituita con il nome della propria
 //sottocartella dove si trova l'applicazione
 $app->setBasePath("/projects/Registrazione_esami");//da cambiare OGNI VOLTA
 
@@ -36,7 +40,7 @@ $app->get('/altra_pagina', function (Request $request, Response $response, $args
     return $response;
 });
 
-$app->get('/esempio_template/{name}', function (Request $request, Response $response, $args) {
+$app->get('/esempio/{name}', function (Request $request, Response $response, $args) {
     $template  = $this->get('template');
     //Recupero l'oggetto che gestisce i template dal container
     //usando il metodo get e passando la stringa identificato nel metodo set

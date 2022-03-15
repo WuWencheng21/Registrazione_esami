@@ -1,4 +1,9 @@
 {
+    "autoload": {
+        "psr-4": {
+            "Util\\" : "Util/"
+        }
+    },
     "require": {
         "league/plates": "^3.4",
         "slim/slim": "4.*",
