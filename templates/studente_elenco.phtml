@@ -1,0 +1,32 @@
+<?php
+
+require 'conf/config.php';
+require 'vendor/autoload.php';
+use League\Plates\Engine;
+
+$dsn = 'mysql:host=' . HOSTNAME . ';dbname=' . DBNAME . ';charset=utf8';
+
+try {
+    $pdo = new PDO($dsn, USERNAME, PASSWORD);
+} catch (Exception $e) {
+    echo $e->getMessage();
+    exit(1);
+}
+
+$stmt = $pdo->query('SELECT id, cognome, nome, matricola, voto, id_corso FROM studente ORDER BY nome 
+GROUP BY name');
+
+$result = $stmt->fetchAll();
+
+$templates = new League\Plates\Engine('templates', 'phtml');
+
+try {
+    $pdo = new PDO($dsn, USERNAME, PASSWORD);
+} catch (Exception $e) {
+    echo $e->getMessage();
+    exit(1);
+}
+
+echo $templates->render('studente_elenco',[
+    'studente' => $result,
+]);
