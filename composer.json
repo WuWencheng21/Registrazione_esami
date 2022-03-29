@@ -9,6 +9,7 @@
         "league/plates": "^3.4",
         "slim/slim": "4.*",
         "slim/psr7": "^1.5",
-        "php-di/slim-bridge": "*"
+        "php-di/slim-bridge": "*",
+        "tuupola/slim-jwt-auth": "^3.6"
     }
 }

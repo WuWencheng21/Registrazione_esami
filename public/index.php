@@ -7,7 +7,9 @@ use Psr\Log\LoggerInterface;
 use Slim\Factory\AppFactory;
 use DI\Container as Container;
 use League\Plates\Engine as Engine;
+use Tuupola\Middleware\JwtAuthentication;
 use Util\Connection;
+
 
 require __DIR__ . '/../vendor/autoload.php';
 require_once '../conf/config.php';
@@ -28,6 +30,23 @@ $container->set('connection', function (){
 
 $app = AppFactory::create();
 
+// Per usare questa classe bisogno installarla con Composer
+// composer require tuupola/slim-jwt-auth
+$app->add(new JwtAuthentication([
+    "path" => [BASE_PATH],
+    "ignore" => [BASE_PATH . "/login", BASE_PATH . "/autenticazione",
+        BASE_PATH . "/images"],
+    //Questa parte fa in modo che se l'autenticazione fallisce per qualsiasi
+    // motivo venga fatto un
+    //redirect verso la pagina di login
+    "error" => function ($response, $arguments) {
+        return $response
+            ->withHeader("Location", BASE_PATH . '/login')
+            ->withStatus(301);
+    },
+    "secret" => JWT_SECRET
+]));
+
 /**
  * Add Error Middleware
  *
@@ -45,41 +64,47 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 //sottocartella dove si trova l'applicazione
 $app->setBasePath(BASE_PATH);
 
-$app->setBasePath("/projects/Registrazione_esami");//da cambiare OGNI VOLTA
-
 $app->get('/', function (Request $request, Response $response) {
-    $response->getBody()->write("Hello world!");
-    return $response;
+    return $response->withStatus(302)->withHeader('Location', BASE_PATH . '/login');
 });
 
-$app->get('/altra_pagina', function (Request $request, Response $response) {
-    $response->getBody()->write("Questa è un'altra pagina");
-    return $response;
-});
-
-$app->get('/esempio_template/{name}', function (Request $request, Response $response, $args) {
-    //Recupero l'oggetto che gestisce i template dal container
-    //usando il metodo get e passando la stringa con cui l'ho identificato
-    //nel metodo set
+/*
+ * Rotta che mostra il form di login
+ */
+$app->get('/login', function (Request $request, Response $response) {
+    //Se il login è già stato effettuato ridirigo verso la ricerca dello studente
+    if (isset($_COOKIE['token']))
+        return $response->withStatus(302)->withHeader('Location', BASE_PATH . '/studente/cerca');
     $template = $this->get('template');
-    //Recupero dall'URL il nome che si trova dopo esempio_template
-    $name = $args['name'];
-    //La stringa creata dal metodo render viene poi inserita nel body
-    //grazie al metodo write
-    $response->getBody()->write($template->render('esempio',[
-        'name' => $name
-    ]));
+    $response->getBody()->write($template->render('login'));
     return $response;
 });
 
-$app->get('/esempio_database/', function (Request $request, Response $response) {
-    $pdo = $this->get('connection');
-    $stmt = $pdo->query('SELECT * FROM corso');
-    $result = $stmt->fetchAll();
-    $response->getBody()->write($result[0]['descrizione']);
+/*
+ * Rotta che genera il token JWT dopo aver proceduto all'autenticazione
+ */
+$app->post('/autenticazione', function (Request $request, Response $response) {
+    //Se il login è già stato effettuato ridirigo verso la ricerca dello studente
+    if (isset($_COOKIE['token']))
+        return $response->withStatus(302)->withHeader('Location', BASE_PATH . '/studente/cerca');
+    $data = $request->getParsedBody();
+    $username = $data['username'];
+    $password = $data['password'];
+    $jwt = \Model\ProfessoreRepository::verificaAutenticazione($username,$password);
+    if ($jwt !== null) {
+        setcookie('token', $jwt);
+        return $response->withStatus(302)->withHeader('Location', BASE_PATH . '/studente/cerca');
+    }
+    else{
+        $template = $this->get('template');
+        $response->getBody()->write($template->render('login',[
+            'login_fallito' => true
+        ]));
+    }
     return $response;
-}
-);
+});
+
+
 
 /*
  * Rotta per la creazione della form di ricerca di uno studente
@@ -99,16 +124,26 @@ $app->get('/studente/inserisci', function (Request $request, Response $response)
 }
 );
 
-$app->get('/accedi', function (Request $request, Response $response) {
-    $template = $this->get('template');
-    $response->getBody()->write($template->render('accedi'));
-    return $response;
-}
-);
+
 
 $app->get('/studente/elenco', function (Request $request, Response $response) {
+    $dsn = 'mysql:host=' . HOSTNAME . ';dbname=' . DBNAME . ';charset=utf8';
+    try {
+        $pdo = new PDO($dsn, USERNAME, PASSWORD);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        exit(1);
+    }
+    $stmt = $pdo->query('SELECT id, cognome, nome, matricola, voto, id_corso FROM studente GROUP BY nome');
+
+    $result = $stmt->fetchAll();
+
     $template = $this->get('template');
-    $response->getBody()->write($template->render('studente_elenco'));
+    $response->getBody()->write($template->render('studente_elenco',
+        [
+            'studente' => $result
+        ]
+    ));
     return $response;
 }
 );

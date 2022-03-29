@@ -25,6 +25,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-di/phpdoc-reader" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/php-di/slim-bridge" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/opis/closure" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tuupola/callable-handler" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tuupola/http-factory" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/tuupola/slim-jwt-auth" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/firebase/php-jwt" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
