@@ -161,10 +161,13 @@ $app->post('/voto/form', function (Request $request, Response $response) {
     $matricola = $data['matricola'];
     //Controllo se è presente, nella realtà verificando
     //all'interno del database, qua è solo per prova
-    if ($matricola == '12345') {
+    $infoStudente = \Model\StudenteRepository::getIdFromMatricola($matricola);
+    if ($matricola === $infoStudente['matricola']) {
         $template = $this->get('template');
-        $response->getBody()->write($template->render('inserisciVoto', [
-            'matricola' => $matricola
+        $response->getBody()->write($template->render('inserisci_voto', [
+            'matricola' => $matricola,
+            'infoStudente' => $infoStudente
+
         ]));
         return $response;
     }
@@ -198,7 +201,7 @@ $app->post('/studente/{matricola}/voto', function (Request $request, Response $r
  */
 $app->get('/studente/form', function (Request $request, Response $response) {
     $template = $this->get('template');
-    $response->getBody()->write($template->render('inserisciStudente'));
+    $response->getBody()->write($template->render('inserisci_studente'));
     return $response;
 }
 );

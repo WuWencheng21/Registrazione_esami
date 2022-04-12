@@ -1,0 +1,45 @@
+<?php $this->layout('home', ['title' => 'Aggiungi nuovo Studente']) ?>
+<h1>Aggiungi socio</h1>
+<form action="nuovoStudente.php" method="post" class="form-horizontal">
+    <div class="form-gruop">
+        <div class="col-6 col-sm-12">
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="input-example-1">Cognome</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input class="form-input" type="text" id="input-example-1" name="cognome">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="input-example-2">Nome</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input class="form-input" type="text" id="input-example-1" name="nome">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="input-example-2">Matricola</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input class="form-input" type="int" id="input-example-1" name="matricola">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-3 col-sm-12">
+                    <label class="form-label" for="input-example-2">ID indirizzo</label>
+                </div>
+                <div class="col-9 col-sm-12">
+                    <input class="form-input" type="int" id="input-example-1" name="id_indirizzo">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-6 col-sm-12">
+                    <b><p><input type="submit" value="Aggiungi studente"></p></b>
+                </div>
+                <b><p><input type="reset" value="Pulisci i dati"></p></b>
+            </div>
+            <!-- form structure -->
+</form>

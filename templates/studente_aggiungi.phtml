@@ -1,0 +1,44 @@
+<?php $this->layout('home', ['title' => 'Modifica']) ?>
+
+<h1>Studente</h1>
+<p>Modifica i dati</p>
+<form action="effettua_modifica.php" method="post" class="form-horizontal">
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+            <label class="form-label" for="input-example-1">Cognome</label>
+        </div>
+        <div class="col-9 col-sm-12">
+            <input class="form-input" type="text"
+                   id="input-example-1" name="cognome" value="<?=$studente['cognome']?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+            <label class="form-label" for="input-example-2">Nome</label>
+        </div>
+        <div class="col-9 col-sm-12">
+            <input class="form-input" type="text"
+                   id="input-example-1" name="nome" value="<?=$studente['nome']?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+            <label class="form-label" for="input-example-2">Corso</label>
+        </div>
+        <div class="col-9 col-sm-12">
+            <input class="form-input" type="text"
+                   id="input-example-1" name="id_corso" value="<?=$studente['id_corso']?>">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+            <label class="form-label" for="input-example-2">Voto</label>
+        </div>
+        <div class="col-9 col-sm-12">
+            <input class="form-input" type="text"
+                   id="input-example-1" name="voto" value="<?=$studente['voto']?>">
+        </div>
+    </div>
+    <p><input type="submit" value="Modifica"></p>
+    <!-- form structure -->
+</form>

@@ -1,5 +1,6 @@
 <?php
 /** @var $matricola
+ * @var $infoStudente
  *  @var $basepath
  */
 ?>
@@ -9,10 +10,19 @@
 ?>
 <h1>Inserisci voto</h1>
 <p>Studente matricola: <?=$matricola?></p>
+<p>Nome cognome dello studente: <?=$infoStudente['nome']?>  <?=$infoStudente['cognome']?></p>
 <form class="form-horizontal" action="<?=$basepath?>/studente/<?=$matricola?>/voto" method="post">
     <div class="input-group">
         <span class="input-group-addon col-4">Voto</span>
         <input type="text" class="form-input" placeholder="Voto, per i decimali usa il punto" name="voto">
-        <input type="submit" class="btn btn-primary" value="Inserisci">
     </div>
+    <div class="input-group">
+        <span class="input-group-addon col-4">Tipologia</span>
+        <input type="text" class="form-input" placeholder="Tipologia esame" name="tipoEsame">
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon col-4">Data dell'esame</span>
+        <input type="datetime-local" class="form-input" name="dataEsame">
+    </div>
+    <input type="submit" class="btn btn-primary" value="Inserisci">
 </form>
