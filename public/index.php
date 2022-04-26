@@ -167,7 +167,6 @@ $app->post('/voto/form', function (Request $request, Response $response) {
         $response->getBody()->write($template->render('inserisci_voto', [
             'matricola' => $matricola,
             'infoStudente' => $infoStudente
-
         ]));
         return $response;
     }
@@ -186,15 +185,22 @@ $app->post('/voto/form', function (Request $request, Response $response) {
 $app->post('/studente/{matricola}/voto', function (Request $request, Response $response, $args) {
     //Qui andrebbe il codice associato all'inserimento del voto nel database
     $data = $request->getParsedBody();
+    $matricola_studente = $args['matricola'];
     $voto = $data['voto'];
-    $successo = VotoRepository::inserisciVoto($voto,$args['matricola'],1,1);
-    if ($successo)
-        $response->getBody()->write('Inserito il voto ');
+    $esito = $data['esito'];
+    $tipo_esame = $data['tipoEsame'];
+    $dataEsame = $data['dataEsame'];
+    $id_professore = $data['id_professore'];
+    $successo = VotoRepository::inserisciVoto($voto, $matricola_studente,
+        $esito, $tipo_esame, $dataEsame, $id_professore);
+    if ($successo){
+        $template = $this->get('template');
+        $response->getBody()->write($template->render('studente_voto'));
+}
     else
         $response->getBody()->write('Voto non inserito');
     return $response;
-}
-);
+});
 
 /*
  * Genera il form per l'inserimento di uno studente
@@ -203,21 +209,40 @@ $app->get('/studente/form', function (Request $request, Response $response) {
     $template = $this->get('template');
     $response->getBody()->write($template->render('inserisci_studente'));
     return $response;
-}
-);
+});
 
-/*
- * Inserisce un nuovo studente
- */
-$app->post('/studente', function (Request $request, Response $response){
-    //Qui andrebbe il codice per l'inserimento dello studente nel DB
+$app->post('/studente/inserisci', function (Request $request, Response $response, $args) {
+    //Qui andrebbe il codice associato all'inserimento del voto nel database
     $data = $request->getParsedBody();
     $matricola = $data['matricola'];
-    $cognome = $data['cognome'];
     $nome = $data['nome'];
-    $response->getBody()->write('Studente inserito: ' . $matricola . ', ' .
-        $cognome . ' ' . $nome);
+    $cognome = $data['cognome'];
+    $id_corso = $data['corso'];
+    $successo = \Model\StudenteRepository::inserisciStudente($matricola, $nome, $cognome, $id_corso);
+    if ($successo)
+        $response->getBody()->write('Studente inserito');
+    else
+        $response->getBody()->write('Studente non inserito');
     return $response;
+});
+
+
+$app->post('/visualizzaVoto', function (Request $request, Response $response){
+    $template = $this->get('template');
+    $response->getBody()->write($template->render('studente_voto'));
+    return $response;
+});
+
+$app->post('/voto/elenco', function (Request $request, Response $response){
+    $data = $request->getParsedBody();
+    $matricola = $data['matricola'];
+    $elencoVoto = \Model\VotoRepository::visualizzaElencoVoto($matricola);
+    $template = $this->get('template');
+    $response->getBody()->write($template->render('visualizza_voto', [
+        'elencoVoto' => $elencoVoto
+    ]));
+    return $response;
+
 });
 
 

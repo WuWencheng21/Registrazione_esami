@@ -14,7 +14,11 @@
 <form class="form-horizontal" action="<?=$basepath?>/studente/<?=$matricola?>/voto" method="post">
     <div class="input-group">
         <span class="input-group-addon col-4">Voto</span>
-        <input type="text" class="form-input" placeholder="Voto, per i decimali usa il punto" name="voto">
+        <input type="float" class="form-input" placeholder="Voto, per i decimali usa il punto" name="voto">
+    </div>
+    <div class="input-group">
+        <span class="input-group-addon col-4">Esito</span>
+        <input type="text" class="form-input" name="esito">
     </div>
     <div class="input-group">
         <span class="input-group-addon col-4">Tipologia</span>
@@ -22,7 +26,10 @@
     </div>
     <div class="input-group">
         <span class="input-group-addon col-4">Data dell'esame</span>
-        <input type="datetime-local" class="form-input" name="dataEsame">
+        <input type="date" class="form-input" name="dataEsame">
     </div>
+    <div class="input-group">
+        <span class="input-group-addon col-4">ID professore</span>
+        <input type="int" class="form-input" name="id_professore">
     <input type="submit" class="btn btn-primary" value="Inserisci">
 </form>

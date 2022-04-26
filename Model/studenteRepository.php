@@ -20,4 +20,20 @@ class StudenteRepository{
         $data = $stmt->fetch();
         return $data;
     }
+
+    public static function inserisciStudente(string $matricola,
+                                              string $nome,
+                                              string $cognome,
+                                              int $id_corso):bool{
+        $connection = Connection::getInstance();
+        $sql = 'INSERT INTO studente (matricola, nome, cognome, id_corso)'.'
+        VALUES(:matricola, :nome, :cognome, :id_corso)';
+        $stmt = $connection->prepare($sql);
+        return $stmt->execute([
+            'matricola' => $matricola,
+            'nome' => $nome,
+            'cognome' => $cognome,
+            'id_corso' => $id_corso
+        ]);
+    }
 }

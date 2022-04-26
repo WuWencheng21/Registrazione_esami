@@ -1,0 +1,28 @@
+<?php $this->layout('home', ['title' => 'Elenco voto studenti']) ?>
+<h1><b>Elenco voto studente</h1></b>
+<div class="form-gruop">
+    <div class="col-10 col-sm-36">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Esito</th>
+                <th>Tipologia esame</th>
+                <th>Data svolgimento esame</th>
+                <th>Voto</th>
+                <th>ID professore responsabile</th>
+            </tr>
+            </thead>
+            <?php foreach ($elencoVoto as $voto): ?>
+                <tbody>
+                <tr>
+                    <td><?=$voto['esito']?></td>
+                    <td><?=$voto['tipo_esame']?></td>
+                    <td><?=$voto['data']?></td>
+                    <td><?=$voto['voto']?></td>
+                    <td><?=$voto['id_professore']?></td>
+                </tr>
+                </tbody>
+            <?php endforeach; ?>
+        </table>
+    </div>
+</div>
