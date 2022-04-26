@@ -161,7 +161,7 @@ $app->post('/voto/form', function (Request $request, Response $response) {
     $matricola = $data['matricola'];
     //Controllo se è presente, nella realtà verificando
     //all'interno del database, qua è solo per prova
-    if(\Model\StudenteRepository::controlloStudente($matricola) == false)
+    if(\Model\StudenteRepository::controlloStudente($matricola))
         {
             return $response->withStatus(302)->withHeader('Location', BASE_PATH . '/studente/form');
         }

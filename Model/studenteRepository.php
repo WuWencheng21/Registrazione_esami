@@ -18,7 +18,14 @@ class StudenteRepository{
             'matricola' => $matricola
         ]);
         $data = $stmt->fetch();
-        return $data;
+        if($data == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static function getIdFromMatricola(string $matricola):array{
